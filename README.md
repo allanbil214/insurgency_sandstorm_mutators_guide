@@ -474,5 +474,10 @@ Mutator: `JumpShoot` — lets you jump and shoot (including ADS) at the same tim
 ```
 Travel Ministry?Scenario=Scenario_Ministry_Checkpoint_Security?Lighting=Day?Mutators=10E,FB8,Diff10,200S,FFOn,VOn,Vampirism,ImprovedAI,Reloads,Bolts,Quickdraw,HitIndicator,JumpShoot,DeathCam,WeaponAnimFix
 ```
+or
+
+```
+Travel Ministry?Scenario=Scenario_Ministry_Checkpoint_Security?Lighting=Day?Mutators=20E,FB8,Diff10,200S,FFOn,VOn,WG5,SW5,Vampirism,ImprovedAI,Reloads,Bolts,Quickdraw,HitIndicator,JumpShoot,DeathCam,WeaponAnimFix
+```
 
 Swap `Ministry`/`Scenario_Ministry_Checkpoint_Security` for any map/scenario combo from the reference table above, and add/remove mutators as needed.
