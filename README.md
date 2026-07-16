@@ -467,6 +467,88 @@ SkullIcon=True
 ### JumpShoot
 Mutator: `JumpShoot` — lets you jump and shoot (including ADS) at the same time. Not compatible with mods that change free aim/ADS.
 
+### NoRestrictPlus
+Mutator: `NoRestrictPlus` — removes restricted/playable area warnings and volume collisions.
+```ini
+[/NoRestrictPlus/Mutators/NoRestrictPlus.NoRestrictPlus_C]
+RemoveRestricted=True
+RemovePlayable=True
+RemoveBlockingVolumes=False
+RemovePlayerCollision=False
+```
+
+### HealthModifier (One Man Army setup — Health only)
+Mutator: `healthmodifier` (or `healthmodifier_2` for an alt config instance).
+Vanilla player HP is 100 for reference. Your setup: player HP boosted to 350, enemy HP kept at vanilla, only self-heal enabled, bleed/shock/revive/HUD extras trimmed off.
+```ini
+[/healthmodifier/Mutators/healthmodifier.healthmodifier_C]
+bDisplayServerInfo=False
+
+;Health
+bEnable_cHP=True
+bFixed_cHP=True
+f_cHP=350
+bEnable_cHPAI=True
+bFixed_cHPAI=True
+f_cHPAI=100
+
+;Shell Shock (off)
+bEnable_shockOnHit=False
+
+;Bleed (neutralized)
+f_dmgThreshold=999999
+bEnable_stemBleed=False
+
+;Headshot modifiers (off)
+bEnable_hsModifier=False
+bEnable_hsAIModifier=False
+
+;Medic — self-heal only, no revive/drag
+bEnable_healing=True
+bEnable_selfHeal=True
+bEnable_revive=False
+bEnable_drag=False
+f_selfHealAmount=25
+f_selfHealLimit=350
+i_maxMedic=0
+
+;Hud
+bShow_HP=True
+bShow_BR=False
+bShow_medicHud=False
+```
+
+### HealthRegen
+Mutator: `HealthRegen` — delayed health regen after combat + healing on objective capture/counterattack start. Pairs with HealthModifier above (regen scales off whatever max HP HealthModifier sets).
+```ini
+[/HealthRegen/Mutator/HealthRegen.HealthRegen_C]
+Config=(GameMode="INSCheckpointGameMode",RegenATeam=True,RegenDTeam=True,RegenDelayTime=8.0,RegenLoopTime=1.0,RegenHealthAmount=15.0,RegenHealthLimit=1.0,ObjATeam=True,ObjDTeam=True,ObjHealMode=2,ObjHealStart=0.5,ObjHealEnd=1.0,ObjHealFinalObj=1.0,ObjHealLimit=1.0)
+RegenGrunt=True
+RegenOverlay=True
+```
+- Regens 15 HP/sec after 8 seconds without taking damage.
+- Heals to 50% at the start of a counterattack, 100% after finishing an objective/counterattack, 100% on the final Checkpoint defend.
+- Directly fixes the "alone and low HP when defend timer starts" problem.
+
+### FireSupport Pack
+Mutators used: `FreeRadios`, `FS_1`
+
+| Mutator | Effect |
+|---|---|
+| `FreeRadios` | Every human player gets a radio — Commanders can call fire support without needing an Observer |
+| `FS_1` | All fire supports +1 charge |
+
+Other options available in the pack: `FS_2`, `FS_2x`, `FS_3x`, `FS_Inf`, `FS_Inf2`, `NoSmoke`, `NoFS`, `StripFS` (+ `bStripAI`/`bStripHuman` config), `NoDelay`, `NoLimits` (last two override the theater — incompatible with theater mutators/custom loadouts).
+
+### Checkpoint Defend-Phase Tuning
+Fixes short defend timers and friendlies not reinforcing fast enough.
+```ini
+[/Script/Insurgency.INSCheckpointGameMode]
+DefendTimer=180
+DefendTimerFinal=300
+RetreatTimer=20
+```
+
 ---
 
 ## Quick Copy Command (Default)
@@ -474,8 +556,14 @@ Mutator: `JumpShoot` — lets you jump and shoot (including ADS) at the same tim
 ```
 Travel Ministry?Scenario=Scenario_Ministry_Checkpoint_Security?Lighting=Day?Mutators=10E,FB8,Diff10,200S,FFOn,VOn,Vampirism,ImprovedAI,Reloads,Bolts,Quickdraw,HitIndicator,JumpShoot,DeathCam,WeaponAnimFix
 ```
-or
 
+**One Man Army setup** — low friendlies (4), tanky player, self-heal, objective healing, free fire support radios, still 20+ enemies:
+
+```
+Travel Ministry?Scenario=Scenario_Ministry_Checkpoint_Security?Lighting=Day?Mutators=20E,FB4,Diff10,200S,FFOn,VOn,FreeRadios,FS_1,healthmodifier,HealthRegen,Vampirism,ImprovedAI,Reloads,Bolts,Quickdraw,HitIndicator,JumpShoot,DeathCam,WeaponAnimFix,NoRestrictPlus
+```
+
+*Full War Setup*
 ```
 Travel Ministry?Scenario=Scenario_Ministry_Checkpoint_Security?Lighting=Day?Mutators=20E,FB8,Diff10,200S,FFOn,VOn,WG5,SW5,Vampirism,ImprovedAI,Reloads,Bolts,Quickdraw,HitIndicator,JumpShoot,DeathCam,WeaponAnimFix
 ```
